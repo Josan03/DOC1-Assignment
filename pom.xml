@@ -10,10 +10,10 @@
     </parent>
 
     <groupId>via.doc1</groupId>
-    <artifactId>ex8_test-coverage</artifactId>
+    <artifactId>doc-ci-cd-demo</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>ex8_test-coverage</name>
-    <description>ex8_test-coverage</description>
+    <name>doc-ci-cd-demo</name>
+    <description>doc-ci-cd-demo</description>
     <properties>
         <java.version>21</java.version>
     </properties>

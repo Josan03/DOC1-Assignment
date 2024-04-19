@@ -1,11 +1,11 @@
-# Fetch the Java
-FROM eclipse-temurin:21-alpine
+FROM maven:3.9.6-eclipse-temurin-21-alpine AS build
+RUN mkdir -p /app
+WORKDIR /app
+COPY pom.xml /app
+COPY src /app/src
+RUN mvn -B package --file pom.xml -DskipTests
 
-# Expose port 8080
+FROM eclipse-temurin:21-jdk-alpine
 EXPOSE 8080
-# set a docker volume if you want
-VOLUME /backend_volume
-# Add the jar file
-ADD /target/*.jar ex7_test-coverage-0.0.1-SNAPSHOT.jar
-# Start the application
-ENTRYPOINT ["java", "-jar", "/ex7_test-coverage-0.0.1-SNAPSHOT.jar"]
+COPY --from=build /app/target/j* doc-ci-cd-demo-0.0.1-SNAPSHOT.jar
+ENTRYPOINT ["java", "-jar", "doc-ci-cd-demo-0.0.1-SNAPSHOT.jar"]
