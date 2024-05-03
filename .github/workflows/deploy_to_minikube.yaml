@@ -20,13 +20,13 @@ jobs:
         run: |
           export SHELL=/bin/bash
           eval $(minikube -p minikube docker-env)
-          docker build -f ./Dockerfile -t doc/assignment:latest .
+          docker build -f ./Dockerfile -t doc-assignment:latest .
           echo -n "Verifying images: "
           docker images
       - name: Deploy to Minikube
         run: |
           kubectl apply -f deploy.yaml
-          kubectl wait --for=condition=Ready pod -l app=doc/assignment
+          kubectl wait --for=condition=Ready pod -l app=doc-assignment
           kubectl get all
       - name: Test service URLs
         run: |

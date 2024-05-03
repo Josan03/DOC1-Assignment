@@ -14,7 +14,7 @@ services:
       - POSTGRES_PASSWORD=1111
 
   backend:
-    image: 'doc/assignment:v1.1'
+    image: 'doc-assignment:v1.1'
     build:
       context: ./
     container_name: 'doc-backend-container'
