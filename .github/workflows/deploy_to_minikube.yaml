@@ -26,12 +26,12 @@ jobs:
       - name: Deploy to Minikube
         run: |
           kubectl apply -f deploy.yaml
-          kubectl wait --for=condition=Ready pod -l app=doc-backend
+          kubectl wait --for=condition=Ready pod -l app=doc-assignment
           kubectl get all
       - name: Test service URLs
         run: |
-          echo "SERVICE_URL=$(minikube service doc-backend --url)"
-          kubectl port-forward service/doc-backend 8080:8080 &> /dev/null &
+          echo "SERVICE_URL=$(minikube service doc-assignment --url)"
+          kubectl port-forward service/doc-assignment 8080:8080 &> /dev/null &
           sleep 5
       - run: |
           curl -i http://localhost:8080/
