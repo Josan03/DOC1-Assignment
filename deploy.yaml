@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: doc-assignment-deployment
+  name: doc-backend-deployment
   labels:
-    app: doc-assignment
+    app: doc-backend
 spec:
   selector:
     matchLabels:
-      app: doc-assignment
+      app: doc-backend
   replicas: 1
   template:
     metadata:
-      name: doc-assignment-pod
+      name: doc-backend-pod
       labels:
-        app: doc-assignment
+        app: doc-backend
     spec:
       containers:
-        - name: doc-assignment-container
+        - name: doc-backend-container
           image: doc-assignment:latest
           imagePullPolicy: Never
           ports:
@@ -26,13 +26,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: doc-assignment-service
+  name: doc-backend-service
   labels:
-    app: doc-assignment
+    app: doc-backend
 spec:
   type: NodePort
   selector:
-    app: doc-assignment
+    app: doc-backend
   ports:
     - name: http
       port: 8080
