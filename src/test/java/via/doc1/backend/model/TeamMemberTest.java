@@ -1,4 +1,4 @@
-package via.doc1.ex8.model;
+package via.doc1.backend.model;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

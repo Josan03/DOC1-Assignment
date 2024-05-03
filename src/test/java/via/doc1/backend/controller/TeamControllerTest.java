@@ -1,4 +1,4 @@
-package via.doc1.ex8.controller;
+package via.doc1.backend.controller;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,8 +14,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import via.doc1.ex8.model.Task;
-import via.doc1.ex8.services.TeamService;
+import via.doc1.backend.model.Task;
+import via.doc1.backend.services.TeamService;
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(value = TeamController.class)
 public class TeamControllerTest {

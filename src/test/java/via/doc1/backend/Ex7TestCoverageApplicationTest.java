@@ -1,4 +1,4 @@
-package via.doc1.ex8;
+package via.doc1.backend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

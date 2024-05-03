@@ -7,5 +7,5 @@ RUN mvn -B package --file pom.xml -DskipTests
 
 FROM eclipse-temurin:21-jdk-alpine
 EXPOSE 8080
-COPY --from=build /app/target/j* doc-ci-cd-demo-0.0.1-SNAPSHOT.jar
+COPY --from=build /app/target/*.jar doc-ci-cd-demo-0.0.1-SNAPSHOT.jar
 ENTRYPOINT ["java", "-jar", "doc-ci-cd-demo-0.0.1-SNAPSHOT.jar"]

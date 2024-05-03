@@ -1,13 +1,18 @@
-package via.doc1.ex8.services;
+package via.doc1.backend.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import via.doc1.ex8.model.*;
+import via.doc1.backend.model.*;
+import via.doc1.backend.repository.TeamMemberRepository;
 
 import java.util.List;
 import java.util.ArrayList;
 
 @Service
 public class TeamService {
+    @Autowired
+    private TeamMemberRepository teamRepository;
+
     private static final List<TeamMember> team_members = new ArrayList<>();
 
     static {
@@ -41,6 +46,10 @@ public class TeamService {
         return null;
     }
 
+    public TeamMember getTeamMember2(String memberId) {
+        return teamRepository.findById(memberId).orElse(null);
+    }
+
     public List<Task> getTasks(String memberId) {
         TeamMember member = getTeamMember(memberId);
         return member == null ? null : member.getTasks();
@@ -60,6 +69,5 @@ public class TeamService {
         }
 
         return null;
-
     }
 }
