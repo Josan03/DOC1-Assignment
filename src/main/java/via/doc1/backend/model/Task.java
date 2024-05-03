@@ -1,11 +1,23 @@
 package via.doc1.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+
 import java.util.Objects;
 
+@Entity(name = "Task")
+@Table(name = "task")
 public class Task {
+    @Id
     private String id;
     private String name;
     private String description;
+    @ManyToOne
+    @JoinColumn(name = "team_member_id", insertable = false, updatable = false)
+    @JsonIgnore
+    private TeamMember teamMember;
+
+    public Task() {}
 
     public Task(String id, String name, String description) {
         this.id = id;
@@ -38,13 +50,20 @@ public class Task {
     }
 
     @Override
+    public String toString() {
+        return "Task{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return id.equals(task.id) &&
-                name.equals(task.name) &&
-                description.equals(task.description);
+        return id.equals(task.id);
     }
 
     @Override

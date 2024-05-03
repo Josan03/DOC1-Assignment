@@ -1,12 +1,26 @@
 package via.doc1.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
+@Entity(name = "TeamMember")
+@Table(name = "team_member")
 public class TeamMember {
+    @Id
     private String id;
     private String name;
     private String email;
+    @OneToMany
+    @JoinColumn(name = "team_member_id")
+    @JsonIgnore
     private List<Task> tasks;
+
+    public TeamMember() {
+        this.tasks = new ArrayList<>();
+    }
 
     public TeamMember(String id, String name, String email, List<Task> tasks) {
         this.id = id;
@@ -49,10 +63,11 @@ public class TeamMember {
 
     @Override
     public String toString() {
-        return "TeamMember{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                '}';
+        return String.format(
+                "TeamMember [" +
+                        "id=%s, " +
+                        "name=%s, " +
+                        "email=%s" +
+                        "tasks=%s]", id, name, email, tasks);
     }
 }
