@@ -32,10 +32,13 @@ jobs:
           kubectl get all
       - name: Test service URLs
         run: |
-          echo "SERVICE_URL=$(minikube service doc-backend-service --url)"
+          echo "Backend Service URL: $(minikube service doc-backend-service --url)"
           kubectl port-forward service/doc-backend-service 8081:8081 &> /dev/null &
+          echo "PostgreSQL URL: $(minikube service doc-pgsql-container --url)"
+          kubectl port-forward service/doc-pgsql-container 5432:5432 &> /dev/null &
           sleep 10
-          curl -i http://localhost:8081/members/Member1
+          curl -i http://localhost:8081
+          psql -h localhost -p 5432 -U postgres -d doc1-assignment -c "SELECT * FROM team_member;"
       - name: Cleanup
         run: |
           eval $(minikube docker-env -u)
