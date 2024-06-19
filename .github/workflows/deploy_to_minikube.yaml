@@ -11,13 +11,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Install dependencies
-        run: sudo apt-get update && sudo apt-get install -y curl
+
       - name: Start Minikube
         id: minikube
         uses: medyagh/setup-minikube@latest
-      - name: Try the cluster !
+
+      - name: Try the cluster
         run: kubectl get pods -A
+
       - name: Build Image
         run: |
           export SHELL=/bin/bash
@@ -25,20 +26,37 @@ jobs:
           docker build -f ./Dockerfile -t doc-assignment:latest .
           echo -n "Verifying images: "
           docker images
-      - name: Deploy to Minikube
+
+      - name: Deploy backend
         run: |
-          kubectl apply -f deploy.yaml
-          kubectl wait --for=condition=Ready pod -l app=doc-backend --timeout=90s
-          kubectl get all
-      - name: Test service URLs
+          kubectl apply -f backend-deployment.yaml
+          kubectl apply -f backend-service.yaml
+
+      - name: Deploy database
         run: |
-          echo "Backend Service URL: $(minikube service doc-backend-service --url)"
-          kubectl port-forward service/doc-backend-service 8081:8081 &> /dev/null &
-          echo "PostgreSQL URL: $(minikube service doc-pgsql-container --url)"
-          kubectl port-forward service/doc-pgsql-container 5432:5432 &> /dev/null &
-          sleep 10
-          curl -i http://localhost:8081
-          psql -h localhost -p 5432 -U postgres -d doc1-assignment -c "SELECT * FROM team_member;"
+          kubectl apply -f db-persistentvolumeclaim.yaml
+          kubectl apply -f db-deployment.yaml
+          kubectl apply -f db-service.yaml
+
+      - name: Wait for backend to be ready
+        run: kubectl wait --for=condition=Ready pod -l io.kompose.service=backend --timeout=90s
+
+      - name: Wait for database to be ready
+        run: kubectl wait --for=condition=Ready pod -l io.kompose.service=db --timeout=90s
+
+      - name: Check all resources
+        run: kubectl get all
+
+      - name: Port forwarding
+        run: |
+          kubectl port-forward service/backend 8081:8081 &> /dev/null &
+          sleep 5
+          kubectl port-forward service/db 5432:5432 &> /dev/null &
+          sleep 5
+
+      - name: Test backend service
+        run: curl -i http://localhost:8081/
+
       - name: Cleanup
         run: |
           eval $(minikube docker-env -u)
