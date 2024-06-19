@@ -32,11 +32,10 @@ jobs:
           kubectl get all
       - name: Test service URLs
         run: |
-          SERVICE_URL=$(minikube service doc-backend-service --url)
-          echo "SERVICE_URL: $SERVICE_URL"
+          echo "SERVICE_URL=$(minikube service doc-backend-service --url)"
           kubectl port-forward service/doc-backend-service 8081:8081 &> /dev/null &
-          sleep 5
-          curl -i $SERVICE_URL
+          sleep 10
+          curl -i
       - name: Cleanup
         run: |
           eval $(minikube docker-env -u)
