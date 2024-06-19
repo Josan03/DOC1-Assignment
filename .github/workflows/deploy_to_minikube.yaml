@@ -35,7 +35,7 @@ jobs:
           echo "SERVICE_URL=$(minikube service doc-backend-service --url)"
           kubectl port-forward service/doc-backend-service 8081:8081 &> /dev/null &
           sleep 10
-          curl -i
+          curl -i http://localhost:8081/members/Member1
       - name: Cleanup
         run: |
           eval $(minikube docker-env -u)
