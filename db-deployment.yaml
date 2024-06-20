@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    kompose.cmd: kompose convert -f docker-compose.yaml
+    kompose.cmd: kompose convert
     kompose.version: 1.32.0 (765fde254)
   labels:
     io.kompose.service: db
@@ -17,7 +17,7 @@ spec:
   template:
     metadata:
       annotations:
-        kompose.cmd: kompose convert -f docker-compose.yaml
+        kompose.cmd: kompose convert
         kompose.version: 1.32.0 (765fde254)
       labels:
         io.kompose.network/doc-ci-cd-demo-default: "true"
@@ -31,7 +31,7 @@ spec:
               value: "1111"
             - name: POSTGRES_USER
               value: postgres
-          image: postgres:14.7-alpine3.17
+          image: postgres:14.1-alpine
           name: doc-pgsql-container
           ports:
             - containerPort: 5432
