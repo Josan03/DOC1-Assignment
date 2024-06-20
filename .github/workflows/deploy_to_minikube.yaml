@@ -27,31 +27,31 @@ jobs:
           echo -n "Verifying images: "
           docker images
 
-      - name: Deploy backend
-        run: |
-          kubectl apply -f backend-deployment.yaml
-          kubectl apply -f backend-service.yaml
-
       - name: Deploy database
         run: |
           kubectl apply -f db-persistentvolumeclaim.yaml
           kubectl apply -f db-deployment.yaml
           kubectl apply -f db-service.yaml
 
-      - name: Wait for backend to be ready
-        run: kubectl wait --for=condition=Ready pod -l io.kompose.service=backend --timeout=90s
+      - name: Deploy backend
+        run: |
+          kubectl apply -f backend-deployment.yaml
+          kubectl apply -f backend-service.yaml
 
       - name: Wait for database to be ready
         run: kubectl wait --for=condition=Ready pod -l io.kompose.service=db --timeout=90s
+
+      - name: Wait for backend to be ready
+        run: kubectl wait --for=condition=Ready pod -l io.kompose.service=backend --timeout=90s
 
       - name: Check all resources
         run: kubectl get all
 
       - name: Port forwarding
         run: |
-          kubectl port-forward service/backend 8081:8081 &> /dev/null &
-          sleep 5
           kubectl port-forward service/db 5432:5432 &> /dev/null &
+          sleep 5
+          kubectl port-forward service/backend 8081:8081 &> /dev/null &
           sleep 5
 
       - name: Test backend service
